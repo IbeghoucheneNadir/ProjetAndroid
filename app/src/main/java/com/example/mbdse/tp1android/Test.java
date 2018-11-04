@@ -41,6 +41,7 @@ public class Test extends AppCompatActivity {
         validBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                login();
                 startActivity(ma);
             }
         });

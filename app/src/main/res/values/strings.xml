@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tp1Android</string>
+    <string name="app_name">ProjetAndroid</string>
     <string name="logintxt">login</string>
     <string name="passtxt">Password</string>
     <string name="validBtn">Connect</string>
