@@ -1,4 +1,4 @@
-package com.example.mbdse.tp1android;
+package mbds;
 
 public class Commentaire {
     /*

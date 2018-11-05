@@ -1,83 +1,68 @@
-package com.example.mbdse.tp1android;
+package mbds;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
 
-    private static  SQLiteOpenHelper cdheler;
-    private static Database idatabase;
-    private SQLiteDatabase db;
-    private ContactHelper mDbHelper;
-
-    private Database(ContactHelper sqlp){
-        mDbHelper=sqlp;
-    }
-    public static Database getIstance(Context ctxt){
-
-        if(idatabase==null) {
-            idatabase =new Database(new ContactHelper(ctxt));
-        }
-        return idatabase;
-
-    }
-    public final class ContactContact
-    {
+    public final class ContactContact {
         private ContactContact() {}
-        public class FeedContact implements BaseColumns
-        {
+        public class FeedContact implements BaseColumns {
             public static final String TABLE_NAME = "Contact";
             public static final String COLUMN_NAME_LASTNAME = "Nom";
             public static final String COLUMN_NAME_FIRSTNAME = "Prenom";
         }
-
     }
 
+    private static Database idatabase;
+    private ContactHelper mDbHelper;
 
-    public void addPerson(String name, String lname)
-    {
+    private Database(ContactHelper sqlp){
+        mDbHelper = sqlp;
+    }
+
+    public static Database getIstance(Context ctxt){
+        if(idatabase==null) {
+            idatabase =new Database(new ContactHelper(ctxt));
+        }
+        return idatabase;
+    }
+
+    public void addPerson(String name, String lname) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-// Create a new map of values, where column names are the keys
+        // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(ContactContact.FeedContact.COLUMN_NAME_LASTNAME, name);
         values.put(ContactContact.FeedContact.COLUMN_NAME_FIRSTNAME, lname);
 
-// Insert the new row, returning the primary key value of the new row
+        // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
     }
-    public List<Person> readPerson()
-    {
+
+    public List<Person> readPerson() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 BaseColumns._ID,
                 ContactContact.FeedContact.COLUMN_NAME_LASTNAME,
                 ContactContact.FeedContact.COLUMN_NAME_FIRSTNAME
         };
-
-
         String selection = "";
         String[] selectionArgs = null;
-
-        String sortOrder =
-                ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " DESC";
-
+        String sortOrder = ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " DESC";
         Cursor cursor = db.query(
                 ContactContact.FeedContact.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
+                null,          // don't group the rows
+                null,           // don't filter by row groups
                 sortOrder               // The sort order
         );
 
@@ -90,7 +75,6 @@ public class Database {
             persons.add(new Person(nom,prenom));
         }
         cursor.close();
-
         return persons;
     }
 

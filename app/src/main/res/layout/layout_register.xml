@@ -10,39 +10,39 @@ android:gravity="center_horizontal">
     android:id="@+id/logintxt"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="40dp"
+    android:textSize="40sp"
     android:text="@string/logintxt" />
 
 <EditText
     android:id="@+id/loginbox"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    />
+    android:inputType="" />
 
 <TextView
     android:id="@+id/passtxt"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="40dp"
+    android:textSize="40sp"
     android:text="@string/passtxt" />
 
 <EditText
     android:id="@+id/passbox"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    />
+    android:inputType="" />
 
 <Button
     android:id="@+id/inscriptionBtn"
     android:text="@string/inscriptionBtn"
-    android:textSize="20dp"
+    android:textSize="20sp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/retourBtn"
         android:text="@string/retourBtn"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
