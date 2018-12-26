@@ -5,32 +5,44 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 android:gravity="center_horizontal">
 
+    <TextView
+        android:id="@+id/logintxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="@string/logintxt" />
 
-<TextView
-    android:id="@+id/logintxt"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="40sp"
-    android:text="@string/logintxt" />
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="" />
 
-<EditText
-    android:id="@+id/loginbox"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:inputType="" />
+    <TextView
+        android:id="@+id/passtxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="@string/passtxt" />
 
-<TextView
-    android:id="@+id/passtxt"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="40sp"
-    android:text="@string/passtxt" />
+    <EditText
+        android:id="@+id/password1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="" />
 
-<EditText
-    android:id="@+id/passbox"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:inputType="" />
+    <TextView
+        android:id="@+id/pass2txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:text="Confirm" />
+
+    <EditText
+        android:id="@+id/password2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="" />
 
 <Button
     android:id="@+id/inscriptionBtn"
@@ -45,6 +57,5 @@ android:gravity="center_horizontal">
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>

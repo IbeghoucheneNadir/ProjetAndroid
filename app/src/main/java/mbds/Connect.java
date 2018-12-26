@@ -39,7 +39,8 @@ public class Connect extends AppCompatActivity {
             validBtn.setBackgroundColor(Color.GREEN);
         }else{
             validBtn.setBackgroundColor(Color.RED);
-        }
-    }
 
+        }
+
+    }
 }
