@@ -36,7 +36,7 @@ public class Register extends AppCompatActivity {
         String pwd1 = this.password1.getText().toString();
         String pwd2 = this.password2.getText().toString();
 
-        if(!(pwd1.equals(pwd2))){
+        if(!(pwd1.equals(pwd2)) || (pwd1.length()==0)){
           /*  Toast.makeText(getApplicationContext(),
                     R.string.errorPwd, Toast.LENGTH_SHORT).show();*/
         }

@@ -21,7 +21,6 @@ public class Connect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_connect);
         final Intent i = new Intent(this, Register.class);
-        final Intent ma = new Intent(this, MainActivity.class);
         loginBox=(EditText)findViewById(R.id.loginbox);
         passBox=(EditText)findViewById(R.id.passbox);
         registerBtn=(Button)findViewById(R.id.registerBtn);
@@ -29,7 +28,6 @@ public class Connect extends AppCompatActivity {
         validBtn=(Button)findViewById(R.id.validBtn);
         validBtn.setOnClickListener((v) -> {
             login();
-            startActivity(ma);
         });
     }
 
@@ -37,10 +35,10 @@ public class Connect extends AppCompatActivity {
         //TODO do login with database check
         if(loginBox.getText().toString().equals("toto") && passBox.getText().toString().equals("tata")){
             validBtn.setBackgroundColor(Color.GREEN);
+            final Intent ma = new Intent(this, MainActivity.class);
+            startActivity(ma);
         }else{
             validBtn.setBackgroundColor(Color.RED);
-
         }
-
     }
 }
