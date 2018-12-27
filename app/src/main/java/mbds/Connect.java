@@ -39,6 +39,8 @@ public class Connect extends AppCompatActivity {
             startActivity(ma);
         }else{
             validBtn.setBackgroundColor(Color.RED);
+            final Intent ma = new Intent(this, MainActivity.class);
+            startActivity(ma); // this is practical for debugging
         }
     }
 }

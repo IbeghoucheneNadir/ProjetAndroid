@@ -21,11 +21,11 @@
 
     <Button
         android:id="@+id/btnSend"
-        android:text="send"
-        android:textSize="20dp"
+        android:text="@string/sendButton"
+        android:textSize="20sp"
         android:layout_weight="1"
         android:layout_width="wrap_content"
-        android:layout_height="0dp" />
+        android:layout_height="2dp" />
 
 
 

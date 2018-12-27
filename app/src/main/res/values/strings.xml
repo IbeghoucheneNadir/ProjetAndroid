@@ -10,5 +10,6 @@
     <string name="frameBtn">Frame</string>
     <string name="btnSend">Send</string>
     <string name="idText">Champs de saisi</string>
+    <string name="sendButton">send</string>
 
 </resources>
