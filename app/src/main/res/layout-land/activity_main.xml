@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:weightSum="4"
     tools:context="mbds.MainActivity"
-    >
+    android:baselineAligned="false">
 
     <FrameLayout
         android:id="@+id/secFrame"

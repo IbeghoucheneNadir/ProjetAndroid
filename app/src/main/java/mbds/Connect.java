@@ -40,6 +40,7 @@ public class Connect extends AppCompatActivity {
 
     public void login() {
         //TODO do login with database check
+<<<<<<< HEAD
         if (login.length() == 0) {
             Toast.makeText(getApplicationContext(),
                     R.string.errorLogin, Toast.LENGTH_SHORT).show();
@@ -58,6 +59,16 @@ public class Connect extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         R.string.connexionEchoue, Toast.LENGTH_SHORT).show();
             }
+=======
+        if(loginBox.getText().toString().equals("toto") && passBox.getText().toString().equals("tata")){
+            validBtn.setBackgroundColor(Color.GREEN);
+            final Intent ma = new Intent(this, MainActivity.class);
+            startActivity(ma);
+        }else{
+            validBtn.setBackgroundColor(Color.RED);
+            final Intent ma = new Intent(this, MainActivity.class);
+            startActivity(ma); // this is practical for debugging
+>>>>>>> ef486ebf11889758163af80b357983f775e85984
         }
     }
 }

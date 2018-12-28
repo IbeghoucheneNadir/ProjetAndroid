@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements iCallable {
              return;
          }
          switchBtn.setOnClickListener((v) -> handleClick());
+         handleClick();
      }
 
     @Override
