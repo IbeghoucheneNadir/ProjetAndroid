@@ -43,7 +43,7 @@ public class Database {
         return idatabase;
     }
 
-    public void addUser(String name, String lname) {
+    public void addPerson(String name, String lname) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -56,7 +56,7 @@ public class Database {
         long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
     }
 
-    public void addPerson(String login, String password) {
+    public void addUser(String login, String password) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -68,7 +68,20 @@ public class Database {
         long newRowId = db.insert(User.FeedUser.TABLE_NAME, null, values);
     }
 
-    public List<Person> readPerson() {
+    public int checkUser(String login, String password)
+    {
+        int id=-1;
+        SQLiteDatabase db=mDbHelper.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT password FROM user WHERE login=? AND password=?" , new String[]{login,password});
+        if(cursor.getCount()>0) {
+            cursor.moveToFirst();
+            id=cursor.getInt(0);
+            cursor.close();
+        }
+        return id;
+}
+
+    public List<Person> readUser() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 BaseColumns._ID,
@@ -100,7 +113,6 @@ public class Database {
         return persons;
     }
 
-/*
        public List<Person> readPerson() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
@@ -132,7 +144,5 @@ public class Database {
         cursor.close();
         return persons;
     }
-     */
-
 }
 

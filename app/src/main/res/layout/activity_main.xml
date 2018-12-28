@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="5"
-    tools:context="mbds.MainActivity"
-    >
+    tools:context="mbds.MainActivity">
 
     <Button
         android:id="@+id/switchBtn"

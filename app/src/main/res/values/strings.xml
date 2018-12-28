@@ -10,5 +10,12 @@
     <string name="frameBtn">Frame</string>
     <string name="btnSend">Send</string>
     <string name="idText">Champs de saisi</string>
+    <string name="errorPwd">Mots de passe non identiques</string>
+    <string name="errorPwdVide">Veuillez renseigner votre mot de passe</string>
+    <string name="saveDb">Vous etes entregistré </string>
+    <string name="errorLogin">Veuillez renseigner votre login</string>
+    <string name="errorPwd2Vide">Veuillez confirmer votre mot de passe</string>
+    <string name="connnexionReussi">Vous etes connecté</string>
+    <string name="connexionEchoue">login ou mot de passe incorrect</string>
 
 </resources>

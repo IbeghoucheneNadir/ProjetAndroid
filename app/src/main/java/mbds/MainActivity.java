@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements iCallable {
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
         if (a) {
-            fragmentTransaction.replace(flm.getId(), contacts);
-        } else {
             fragmentTransaction.replace(flm.getId(), messages);
+        } else {
+            fragmentTransaction.replace(flm.getId(), contacts);
         }
         fragmentTransaction.commit();
     }

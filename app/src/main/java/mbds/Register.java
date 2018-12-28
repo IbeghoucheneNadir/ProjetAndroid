@@ -36,21 +36,30 @@ public class Register extends AppCompatActivity {
         String pwd1 = this.password1.getText().toString();
         String pwd2 = this.password2.getText().toString();
 
-        if(!(pwd1.equals(pwd2)) || (pwd1.length()==0)){
-          /*  Toast.makeText(getApplicationContext(),
-                    R.string.errorPwd, Toast.LENGTH_SHORT).show();*/
+        if(name.length()==0){
+            Toast.makeText(getApplicationContext(),
+                    R.string.errorLogin, Toast.LENGTH_SHORT).show();
+        }
+        else if( pwd1.length()==0){
+             Toast.makeText(getApplicationContext(),
+                    R.string.errorPwdVide, Toast.LENGTH_SHORT).show();
+        }
+        else if(( pwd1.length()!=0 && pwd2.length()==0) ){
+            Toast.makeText(getApplicationContext(),
+                    R.string.errorPwd2Vide, Toast.LENGTH_SHORT).show();
+        }
+        else if(!(pwd1.equals(pwd2)) ){
+           Toast.makeText(getApplicationContext(),
+                 R.string.errorPwd, Toast.LENGTH_SHORT).show();
         }
         else{
             db= Database.getIstance(getApplicationContext());
             db.addPerson(name, pwd1);
-
-
-         /*   Toast.makeText(getApplicationContext(),
-                    R.string.saveDb, Toast.LENGTH_SHORT).show();   */
+            Toast.makeText(getApplicationContext(),
+                    R.string.saveDb, Toast.LENGTH_SHORT).show();
             //redirect to login page
             Intent intent = new Intent(this, Connect.class);
             startActivity(intent);
         }
     }
 }
-
