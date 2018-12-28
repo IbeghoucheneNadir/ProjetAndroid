@@ -54,7 +54,7 @@ public class Register extends AppCompatActivity {
         }
         else{
             db= Database.getIstance(getApplicationContext());
-            db.addPerson(name, pwd1);
+            db.addUser(name, pwd1);
             Toast.makeText(getApplicationContext(),
                     R.string.saveDb, Toast.LENGTH_SHORT).show();
             //redirect to login page
