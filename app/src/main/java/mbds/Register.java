@@ -1,6 +1,5 @@
 package mbds;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,12 +20,12 @@ import retrofit2.Response;
 
 public class Register extends AppCompatActivity {
 
-    EditText login;
-    EditText password1;
-    EditText password2;
-    Button inscriptionBtn;
-    Button retourBtn;
-    Database db;
+    private EditText login;
+    private EditText password1;
+    private EditText password2;
+    private Button inscriptionBtn;
+    private Button retourBtn;
+    private Database db;
     private ApiService mAPIService;
 
     @Override
@@ -72,8 +71,6 @@ public class Register extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(),
             //       R.string.saveDb, Toast.LENGTH_SHORT).show();
             //redirect to login page
-            Intent intent = new Intent(this, Connect.class);
-            startActivity(intent);
         }
     }
 
@@ -86,24 +83,28 @@ public class Register extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<CreateUser> call, Response<CreateUser> response) {
+                //message send but what result?
                 if(response.isSuccessful()) {
-                    showResponse(response.body().toString());
+                    Toast.makeText(getApplicationContext(),
+                            "Account for " + response.body().getUsername() + " created!", Toast.LENGTH_SHORT).show();
+                    finish();
                     Log.i("CREATEUSER", "post submitted to API." + response.toString());
                 }else {
+                    //server error or username already exists...
+                    Toast.makeText(getApplicationContext(),
+                            "Bad Request! The username probably already exists!", Toast.LENGTH_SHORT).show();
                     Log.w("CREATEUSER", "post submitted to API." + response.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<CreateUser> call, Throwable t) {
+                //message not send...
+                Toast.makeText(getApplicationContext(),
+                        "Connection Problem! Request not send!", Toast.LENGTH_SHORT).show();
                 Log.e("CREATEUSER", "Unable to submit post to API. " + t.getMessage());
                 Log.e("CREATEUSER", call.toString());
             }
         });
-    }
-
-    public void showResponse(String response) {
-        Toast.makeText(getApplicationContext(),
-                response, Toast.LENGTH_SHORT).show();
     }
 }

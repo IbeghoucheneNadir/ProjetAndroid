@@ -1,6 +1,6 @@
 package mbds;
 
-public class Person {
+class Person {
 
     private String nom;
     private String prenom;
@@ -9,7 +9,6 @@ public class Person {
     public Person(String nom, String prenom){
         this.nom=nom;
         this.prenom=prenom;
-        this.contact=contact;
     }
 
     public String getNom(){

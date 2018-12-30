@@ -18,13 +18,13 @@ import java.util.List;
 
 public class FragmentContacts extends Fragment {
 
-    iCallable mCallback;
-    Button btn;
-    TextAdapter mAdapter;
-    RecyclerView recyclerView;
-    Database db;
-    List<String> nom = new ArrayList<>();
-    List<Person> personne = new ArrayList<>();
+    private iCallable mCallback;
+    private Button btn;
+    private TextAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private Database db;
+    private List<String> nom = new ArrayList<>();
+    private List<Person> personne = new ArrayList<>();
 
     public FragmentContacts() {
         mAdapter = new TextAdapter(nom);
@@ -36,14 +36,9 @@ public class FragmentContacts extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_contacts, container, false);
-        btn=(Button) v.findViewById(R.id.btnSend);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                transferData("hello coucou ");
-            }
-        });
+        View v = inflater.inflate(R.layout.fragment_contacts, container, false);
+        btn = v.findViewById(R.id.btnSend);
+        btn.setOnClickListener(v1 -> transferData("hello coucou "));
         recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);

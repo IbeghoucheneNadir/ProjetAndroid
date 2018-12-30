@@ -12,11 +12,11 @@ import mbdse.R;
 
 public class Connect extends AppCompatActivity {
 
-    EditText login;
-    EditText password;
-    Button validBtn;
-    Button registerBtn;
-    Database db;
+    private EditText login;
+    private EditText password;
+    private Button validBtn;
+    private Button registerBtn;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

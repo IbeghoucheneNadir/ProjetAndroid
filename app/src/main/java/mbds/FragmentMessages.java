@@ -9,8 +9,8 @@ import android.widget.TextView;
 import mbdse.R;
 
 public class FragmentMessages extends Fragment {
-    String txt;
-    TextView tv;
+    private String txt;
+    private TextView tv;
 
     public FragmentMessages(){}
 

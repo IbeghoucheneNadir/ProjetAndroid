@@ -1,6 +1,6 @@
 package mbds;
 
-public class User {
+class User {
     private String login;
     private String password;
 
@@ -12,4 +12,5 @@ public class User {
     public String getPassword(){
         return this.password;
     }
+    public String getLogin() { return this.login; }
 }

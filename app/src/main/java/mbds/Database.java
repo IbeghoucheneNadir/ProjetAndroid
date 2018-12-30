@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+class Database {
 
     public final class User {
         private User() {}
@@ -30,7 +30,7 @@ public class Database {
     }
 
     private static Database idatabase;
-    private ContactHelper mDbHelper;
+    private final ContactHelper mDbHelper;
 
     private Database(ContactHelper sqlp){
         mDbHelper = sqlp;
@@ -101,7 +101,7 @@ public class Database {
                 sortOrder               // The sort order
         );
 
-        List persons = new ArrayList<Person>();
+        List<Person> persons = new ArrayList<>();
         while(cursor.moveToNext())
         {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(User.FeedUser._ID));
@@ -133,7 +133,7 @@ public class Database {
                 sortOrder               // The sort order
         );
 
-        List persons = new ArrayList<Person>();
+        List<Person> persons = new ArrayList<>();
         while(cursor.moveToNext())
         {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(ContactContact.FeedContact._ID));

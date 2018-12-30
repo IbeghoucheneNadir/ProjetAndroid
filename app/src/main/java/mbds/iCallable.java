@@ -1,5 +1,5 @@
 package mbds;
 
-public interface iCallable {
+interface iCallable {
     void transferData(String s);
 }

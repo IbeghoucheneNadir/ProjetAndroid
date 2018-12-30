@@ -9,13 +9,13 @@ import mbdse.R;
 
 public class MainActivity extends AppCompatActivity implements iCallable {
 
-     FrameLayout flm;
-     FrameLayout fls;
-     Button switchBtn;
-     Database db;
-     FragmentContacts contacts = new FragmentContacts();
-     FragmentMessages messages = new FragmentMessages();
-     boolean a = true;
+    private FrameLayout flm;
+    private FrameLayout fls;
+    private Button switchBtn;
+    private Database db;
+    private FragmentContacts contacts = new FragmentContacts();
+    private FragmentMessages messages = new FragmentMessages();
+    private boolean a = true;
 
      @Override
      protected void onCreate(Bundle saveActivityFragment) {

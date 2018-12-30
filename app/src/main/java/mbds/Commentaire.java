@@ -1,6 +1,6 @@
 package mbds;
 
-public class Commentaire {
+class Commentaire {
     /*
     pseudo[][] command [][] msg[]
     ALIce --> bob

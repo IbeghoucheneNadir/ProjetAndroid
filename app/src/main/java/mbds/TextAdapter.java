@@ -8,7 +8,7 @@ import android.widget.TextView;
 import mbdse.R;
 import java.util.List;
 
-public class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
+class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtv;
