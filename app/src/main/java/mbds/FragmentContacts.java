@@ -3,6 +3,7 @@ package mbds;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,20 +20,16 @@ import java.util.List;
 public class FragmentContacts extends Fragment {
 
     private iCallable mCallback;
-    private Button btn;
+    private FloatingActionButton btn;
     private TextAdapter mAdapter;
     private RecyclerView recyclerView;
     private Database db;
     private List<String> nom = new ArrayList<>();
     private List<Person> personne = new ArrayList<>();
 
-    public FragmentContacts() {
-        mAdapter = new TextAdapter(nom);
-    }
+    public FragmentContacts() { mAdapter = new TextAdapter(nom); }
 
-    public void transferData(String s) {
-        mCallback.transferData(s);
-    }
+    public void transferData(String s) { mCallback.transferData(s); }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // Inflate the layout for this fragment

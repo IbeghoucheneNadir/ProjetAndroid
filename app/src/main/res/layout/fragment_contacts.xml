@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="mbds.MainActivity"
-    android:weightSum="8"
-    android:orientation="vertical"
-    android:background="@android:color/holo_green_dark">
-
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:scrollbars="vertical" />
+        android:layout_height="wrap_content"
+        tools:context="mbds.MainActivity"
+        android:weightSum="8"
+        android:orientation="vertical"
+        android:background="@android:color/holo_green_dark">
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7">
 
-    <Button
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            tools:itemCount="10" />
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnSend"
-        android:text="@string/sendButton"
-        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="2dp" />
-
-
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
 </LinearLayout>
+

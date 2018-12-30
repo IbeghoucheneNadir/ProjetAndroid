@@ -15,7 +15,7 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            txtv = (TextView) itemView.findViewById(R.id.cellulite);
+            txtv = itemView.findViewById(R.id.cellulite);
         }
     }
 
