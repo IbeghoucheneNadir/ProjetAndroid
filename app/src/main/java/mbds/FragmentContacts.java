@@ -1,6 +1,7 @@
 package mbds;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -35,7 +36,11 @@ public class FragmentContacts extends Fragment {
        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
         btn = v.findViewById(R.id.btnSend);
-        btn.setOnClickListener(v1 -> transferData("hello coucou "));
+        btn.setOnClickListener(v1 -> {
+            final Intent ma = new Intent(getActivity(), AddContact.class);
+            startActivity(ma);
+            transferData("hello coucou ");
+        });
         recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);

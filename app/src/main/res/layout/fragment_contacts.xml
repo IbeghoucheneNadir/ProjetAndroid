@@ -19,8 +19,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scrollbars="vertical"
-            tools:itemCount="10" />
+            android:scrollbars="vertical" />
 
     </ScrollView>
 
