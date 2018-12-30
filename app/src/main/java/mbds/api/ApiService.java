@@ -13,4 +13,8 @@ public interface ApiService {
     @Headers({"Content-Type:application/json"})
     Call<CreateUser> createUser(@Body Map<String, String> params);
 
+    @POST("/api/login")
+    @Headers({"Content-Type:application/json"})
+    Call<Login> login(@Body Map<String, String> params);
+
 }
