@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mbds.api.ApiService;
-import mbds.api.ApiUtils;
 import mbds.api.CreateUser;
+import mbds.api.RetrofitClient;
 import mbdse.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +39,7 @@ public class Register extends AppCompatActivity {
         inscriptionBtn.setOnClickListener((v) -> handleRegister());
         retourBtn = findViewById(R.id.retourBtn);
         retourBtn.setOnClickListener((v) -> finish());
-        mAPIService = ApiUtils.getAPIService();
+        mAPIService = RetrofitClient.getAPIService();
     }
 
     private void handleRegister(){
@@ -65,12 +65,7 @@ public class Register extends AppCompatActivity {
                  R.string.errorPwd, Toast.LENGTH_SHORT).show();
         }
         else{
-            db= Database.getIstance(getApplicationContext());
-            db.addUser(name, pwd1);
             sendCreateUser(name, pwd1);
-            //Toast.makeText(getApplicationContext(),
-            //       R.string.saveDb, Toast.LENGTH_SHORT).show();
-            //redirect to login page
         }
     }
 
@@ -85,6 +80,8 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<CreateUser> call, Response<CreateUser> response) {
                 //message send but what result?
                 if(response.isSuccessful()) {
+                    db = Database.getIstance(getApplicationContext());
+                    db.addUser(name, pass);
                     Toast.makeText(getApplicationContext(),
                             "Account for " + response.body().getUsername() + " created!", Toast.LENGTH_SHORT).show();
                     finish();
