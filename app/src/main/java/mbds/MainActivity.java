@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements iCallable {
     public void transferData(String s) { messages.setText(s); }
 
     private void handleClick(){
-        db.addPerson("ibeghouchene","Nadir");
+      //  db.addPerson("ibeghouchene","Nadir");
         a = !a;
         FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
