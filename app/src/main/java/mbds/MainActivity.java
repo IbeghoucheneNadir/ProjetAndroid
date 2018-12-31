@@ -38,7 +38,12 @@ public class MainActivity extends AppCompatActivity implements iCallable {
      }
 
     @Override
-    public void transferData(String s) { messages.setText(s); }
+    public void transferData(String s) {
+         if(switchBtn != null){
+             handleClick();
+         }
+         messages.setText(s);
+     }
 
     private void handleClick(){
         a = !a;

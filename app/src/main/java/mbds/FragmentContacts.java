@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import mbdse.R;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FragmentContacts extends Fragment implements TextAdapterListener{
 
@@ -92,6 +94,14 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
         Log.i("POSITION", ""+holder.getAdapterPosition());
         holder.itemView.setBackgroundColor(Color.BLUE);
         transferData(str);
+        Timer timer = new Timer(str, true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }, 1000);
+
     }
 }
 
