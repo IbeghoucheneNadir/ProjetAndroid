@@ -1,5 +1,6 @@
 package mbds;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -35,6 +36,4 @@ public class AddContact extends AppCompatActivity {
                 R.string.contactAjoute, Toast.LENGTH_SHORT).show();
         finish();
     }
-
-
 }
