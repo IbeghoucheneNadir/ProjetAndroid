@@ -27,6 +27,7 @@
         <activity android:name="mbds.Register"></activity>
         <activity android:name="mbds.MainActivity"></activity>
         <activity android:name="mbds.AddContact"></activity>
+        <service android:name="mbds.api.CheckMessagesService" android:process=":remote"/>
 
     </application>
 
