@@ -1,6 +1,7 @@
 package mbds;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,7 @@ import mbdse.R;
 import java.util.List;
 
 class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public final TextView txtv;
         final TextAdapter txta;
@@ -20,20 +21,6 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
             super(itemView);
             txtv = itemView.findViewById(R.id.cellulite);
             txta = txtA;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int mPosition = getLayoutPosition();
-// Use that to access the affected item in mWordList.
-            String element = strs.get(mPosition);
-// Change the word in the mWordList.
-            strs.set(mPosition, "Clicked! " + element);
-// Notify the adapter, that the data has changed so it can
-// update the RecyclerView to display the data.
-            tal.textClicked(element);
-            txta.notifyDataSetChanged();
         }
     }
 
@@ -56,6 +43,7 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.txtv.setText(strs.get(position));
+        holder.txtv.setOnClickListener((view -> tal.textClicked(strs.get(position), holder)));
     }
 
     @Override
