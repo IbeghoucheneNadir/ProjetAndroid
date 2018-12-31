@@ -32,17 +32,19 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
             strs.set(mPosition, "Clicked! " + element);
 // Notify the adapter, that the data has changed so it can
 // update the RecyclerView to display the data.
+            tal.textClicked(element);
             txta.notifyDataSetChanged();
-            Log.i("USELESSTAG", "Clicked on " + mPosition );
         }
     }
 
     private final List<String> strs;
     private LayoutInflater mInflater;
+    private TextAdapterListener tal;
 
-    public TextAdapter(Context context, List<String> strs) {
+    public TextAdapter(Context context, List<String> strs, TextAdapterListener tal) {
         mInflater = LayoutInflater.from(context);
         this.strs = strs;
+        this.tal = tal;
     }
 
     @Override

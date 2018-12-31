@@ -31,7 +31,7 @@ public class AddContact extends AppCompatActivity {
     private void onClick(){
         EditText editText =  findViewById(R.id.contactText);
         String contact = editText.getText().toString();
-        db.addPerson(contact, contact);
+        db.addPerson(contact);
         Toast.makeText(getApplicationContext(),
                 R.string.contactAjoute, Toast.LENGTH_SHORT).show();
         finish();

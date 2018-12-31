@@ -3,23 +3,19 @@ package mbds;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import mbdse.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentContacts extends Fragment {
+public class FragmentContacts extends Fragment implements TextAdapterListener{
 
     private iCallable mCallback;
     private FloatingActionButton btn;
@@ -85,8 +81,13 @@ public class FragmentContacts extends Fragment {
         for(Person p : personne){
             nom.add(p.getNom());
         }
-        recyclerView.setAdapter(new TextAdapter(this.getContext(),nom));
+        recyclerView.setAdapter(new TextAdapter(this.getContext(),nom, this));
         recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void textClicked(String str) {
+        transferData(str);
     }
 }
 

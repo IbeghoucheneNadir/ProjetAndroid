@@ -25,7 +25,6 @@ class Database {
         public class FeedContact implements BaseColumns {
             public static final String TABLE_NAME = "Contact";
             public static final String COLUMN_NAME_LASTNAME = "Nom";
-            public static final String COLUMN_NAME_FIRSTNAME = "Prenom";
         }
     }
 
@@ -43,14 +42,13 @@ class Database {
         return idatabase;
     }
 
-    public void addPerson(String name, String lname) {
+    public void addPerson(String name) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(ContactContact.FeedContact.COLUMN_NAME_LASTNAME, name);
-        values.put(ContactContact.FeedContact.COLUMN_NAME_FIRSTNAME, lname);
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
@@ -106,8 +104,8 @@ class Database {
         {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(User.FeedUser._ID));
             String nom = cursor.getString(cursor.getColumnIndex(User.FeedUser.COLUMN_NAME_LOGIN));
-            String prenom = cursor.getString(cursor.getColumnIndex(User.FeedUser.COLUMN_NAME_PASSWORD));
-            persons.add(new Person(nom,prenom));
+            String password = cursor.getString(cursor.getColumnIndex(User.FeedUser.COLUMN_NAME_PASSWORD));
+            persons.add(new Person(nom,password));
         }
         cursor.close();
         return persons;
@@ -118,11 +116,10 @@ class Database {
         String[] projection = {
                 BaseColumns._ID,
                 ContactContact.FeedContact.COLUMN_NAME_LASTNAME,
-                ContactContact.FeedContact.COLUMN_NAME_FIRSTNAME
         };
         String selection = "";
         String[] selectionArgs = null;
-        String sortOrder = ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " DESC";
+        String sortOrder = ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " ASC";
         Cursor cursor = db.query(
                 ContactContact.FeedContact.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
@@ -138,8 +135,7 @@ class Database {
         {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(ContactContact.FeedContact._ID));
             String nom = cursor.getString(cursor.getColumnIndex(ContactContact.FeedContact.COLUMN_NAME_LASTNAME));
-            String prenom = cursor.getString(cursor.getColumnIndex(ContactContact.FeedContact.COLUMN_NAME_FIRSTNAME));
-            persons.add(new Person(nom,prenom));
+            persons.add(new Person(nom));
         }
         cursor.close();
         return persons;
