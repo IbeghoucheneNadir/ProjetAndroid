@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,10 +26,10 @@ public class FragmentContacts extends Fragment {
     private TextAdapter mAdapter;
     private RecyclerView recyclerView;
     private Database db;
-    private List<String> nom = new ArrayList<>();
+    private List<String> nom;
     private List<Person> personne = new ArrayList<>();
 
-    public FragmentContacts() { mAdapter = new TextAdapter(nom); }
+    public FragmentContacts() {  }
 
     public void transferData(String s) { mCallback.transferData(s); }
 
@@ -42,47 +43,50 @@ public class FragmentContacts extends Fragment {
             transferData("hello coucou ");
         });
         recyclerView = v.findViewById(R.id.recycler_view);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-               View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-               int pos = recyclerView.getChildAdapterPosition(child);
-
-                return ( child != null );
-                }
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
-            }
-        });
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+//            @Override
+//            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+//               View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+//               int pos = recyclerView.getChildAdapterPosition(child);
+//
+//                return ( child != null );
+//                }
+//            @Override
+//            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+//
+//            }
+//        });
         return v;
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        db=Database.getIstance(context);
+        if(context instanceof iCallable) {
+            mCallback = (iCallable) context;
+        }else{
+            throw new ClassCastException(context.toString()+ " must implement iCallable");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        nom = new ArrayList<>();
+        db=Database.getIstance(this.getContext());
         personne=db.readPerson();
         for(Person p : personne){
             nom.add(p.getNom());
         }
-        mAdapter.notifyDataSetChanged();
-
-        if(context instanceof iCallable)
-        {
-            mCallback = (iCallable) context;
-        }
-        else
-        {
-            throw new ClassCastException(context.toString()+ " must implement iCallable");
-        }
+        recyclerView.setAdapter(new TextAdapter(this.getContext(),nom));
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }
 

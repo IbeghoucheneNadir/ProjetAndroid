@@ -1,6 +1,8 @@
 package mbds;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,27 +11,44 @@ import mbdse.R;
 import java.util.List;
 
 class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView txtv;
+        public final TextView txtv;
+        final TextAdapter txta;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView, TextAdapter txtA) {
             super(itemView);
             txtv = itemView.findViewById(R.id.cellulite);
+            txta = txtA;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int mPosition = getLayoutPosition();
+// Use that to access the affected item in mWordList.
+            String element = strs.get(mPosition);
+// Change the word in the mWordList.
+            strs.set(mPosition, "Clicked! " + element);
+// Notify the adapter, that the data has changed so it can
+// update the RecyclerView to display the data.
+            txta.notifyDataSetChanged();
+            Log.i("USELESSTAG", "Clicked on " + mPosition );
         }
     }
 
-    private List<String> strs;
+    private final List<String> strs;
+    private LayoutInflater mInflater;
 
-    public TextAdapter(List<String> strs) {
+    public TextAdapter(Context context, List<String> strs) {
+        mInflater = LayoutInflater.from(context);
         this.strs = strs;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cellule, parent, false);
-        return new MyViewHolder(itemView);
+        View itemView = mInflater.inflate(R.layout.cellule, parent, false);
+        return new MyViewHolder(itemView, this);
     }
 
     @Override
@@ -38,8 +57,6 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
     }
 
     @Override
-    public int getItemCount() {
-        return strs.size();
-    }
+    public int getItemCount() { return strs.size(); }
 }
 

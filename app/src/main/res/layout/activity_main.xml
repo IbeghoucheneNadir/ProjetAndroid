@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
+    android:weightSum="9"
     tools:context="mbds.MainActivity">
 
     <Button
         android:id="@+id/switchBtn"
-        android:text="Switch"
-        android:textSize="20dp"
+        android:text="@string/switchstr"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_weight="1"
         android:layout_height="0dp" />
@@ -19,7 +19,7 @@
     <FrameLayout
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="8"
         android:layout_height="0dp">
     </FrameLayout>
 

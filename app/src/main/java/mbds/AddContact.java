@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import mbds.api.ApiService;
 import mbds.api.RetrofitClient;
@@ -30,6 +31,8 @@ public class AddContact extends AppCompatActivity {
         EditText editText =  findViewById(R.id.contactText);
         String contact = editText.getText().toString();
         db.addPerson(contact, contact);
+        Toast.makeText(getApplicationContext(),
+                R.string.contactAjoute, Toast.LENGTH_SHORT).show();
         finish();
     }
 
