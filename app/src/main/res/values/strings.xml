@@ -23,4 +23,7 @@
     <string name="cellulite">cellulite</string>
     <string name="switchstr">Switch</string>
     <string name="contactAjoute">Vous avez ajouté un contact</string>
+    <string name="local_service_label">HelloWorld</string>
+    <string name="remote_service_started">remote service started</string>
+    <string name="remote_service_stopped">remote service stopped</string>
 </resources>

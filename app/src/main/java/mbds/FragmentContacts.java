@@ -40,30 +40,11 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
         btn.setOnClickListener(v1 -> {
             final Intent ma = new Intent(getActivity(), AddContact.class);
             startActivity(ma);
-            transferData("hello coucou ");
         });
         recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-//            @Override
-//            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//               View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-//               int pos = recyclerView.getChildAdapterPosition(child);
-//
-//                return ( child != null );
-//                }
-//            @Override
-//            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-//
-//            }
-//
-//            @Override
-//            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-//
-//            }
-//        });
         return v;
     }
 

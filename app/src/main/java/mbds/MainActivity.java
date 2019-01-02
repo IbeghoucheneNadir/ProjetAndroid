@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements iCallable {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         // Unbind from the service
         if (mBound) {
             unbindService(mConnection);

@@ -28,6 +28,13 @@
         <activity android:name="mbds.MainActivity"></activity>
         <activity android:name="mbds.AddContact"></activity>
         <service android:name="mbds.api.CheckMessagesService" android:process=":remote"/>
+        <receiver android:name="mbds.api.ReceiverCall" >
+            <intent-filter>
+                <action android:name="mbds.api.restartService" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
 
     </application>
 

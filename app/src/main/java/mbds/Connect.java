@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mbds.api.ApiService;
+import mbds.api.CheckMessagesService;
 import mbds.api.CreateUser;
 import mbds.api.Login;
 import mbds.api.RetrofitClient;
@@ -43,6 +44,8 @@ public class Connect extends AppCompatActivity {
         registerBtn.setOnClickListener((v) -> startActivity(i));
         validBtn = findViewById(R.id.validBtn);
         validBtn.setOnClickListener((v) -> login());
+        startService(new Intent(this, CheckMessagesService.class));
+        Log.i("Connect ONCREATE", "created!");
     }
 
     public int checkUser(String login, String password) {
