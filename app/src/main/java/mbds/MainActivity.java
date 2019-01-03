@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements iCallable {
     private FragmentContacts contacts = new FragmentContacts();
     private FragmentMessages messages = new FragmentMessages();
     private boolean a = true;
+    private long userID;
 
      @Override
      protected void onCreate(Bundle saveActivityFragment) {
@@ -35,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements iCallable {
          fls = findViewById(R.id.secFrame);
          db= Database.getIstance(getApplicationContext());
          switchBtn=findViewById(R.id.switchBtn);
-
+         Intent intent = getIntent();
+         userID = intent.getLongExtra("UserID", 0);
+         contacts.setUserID(userID);
          if(switchBtn == null){ // mode paysage (pas de bouton)
              FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
              fragmentTransaction.replace(flm.getId(), messages);

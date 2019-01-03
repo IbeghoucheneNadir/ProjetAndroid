@@ -69,6 +69,8 @@ public class Connect extends AppCompatActivity {
                 //and then try to connect to the remote server
                 validBtn.setBackgroundColor(Color.GREEN);
                 final Intent ma = new Intent(this, MainActivity.class);
+                db.readUser();
+                ma.putExtra("UserID", db.readUserID(login.getText().toString()));
                 startActivity(ma);
                 Toast.makeText(getApplicationContext(),
                         R.string.connnexionReussi, Toast.LENGTH_SHORT).show();
@@ -90,6 +92,7 @@ public class Connect extends AppCompatActivity {
                             db.addUser(params.get("username") , params.get("password"));
                             validBtn.setBackgroundColor(Color.GREEN);
                             final Intent ma = new Intent(Connect.this, MainActivity.class);
+                            ma.putExtra("UserID", db.readUserID(params.get("username")));
                             startActivity(ma);
                             Toast.makeText(getApplicationContext(),
                                     R.string.connnexionReussi, Toast.LENGTH_SHORT).show();

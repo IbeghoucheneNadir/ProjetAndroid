@@ -16,11 +16,14 @@ public class AddContact extends AppCompatActivity {
     private Database db;
     private ApiService mAPIService;
     private Button addContactBtn;
+    private long userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        userID = intent.getLongExtra("UserID", 0);
         setContentView(R.layout.layout_addcontact);
         db = Database.getIstance(getApplicationContext());
         mAPIService = RetrofitClient.getAPIService();
@@ -31,7 +34,7 @@ public class AddContact extends AppCompatActivity {
     private void onClick(){
         EditText editText =  findViewById(R.id.contactText);
         String contact = editText.getText().toString();
-        db.addPerson(contact);
+        db.addPerson(contact, userID);
         Toast.makeText(getApplicationContext(),
                 R.string.contactAjoute, Toast.LENGTH_SHORT).show();
         finish();

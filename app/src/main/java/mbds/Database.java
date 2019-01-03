@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ class Database {
         public class FeedContact implements BaseColumns {
             public static final String TABLE_NAME = "Contact";
             public static final String COLUMN_NAME_LASTNAME = "Nom";
+            public static final String COLUMN_NAME_USERID = "UserID";
         }
     }
 
@@ -42,13 +45,14 @@ class Database {
         return idatabase;
     }
 
-    public void addPerson(String name) {
+    public void addPerson(String name, long userID) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(ContactContact.FeedContact.COLUMN_NAME_LASTNAME, name);
+        values.put(ContactContact.FeedContact.COLUMN_NAME_USERID, userID);
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
@@ -98,12 +102,12 @@ class Database {
                 null,           // don't filter by row groups
                 sortOrder               // The sort order
         );
-
         List<Person> persons = new ArrayList<>();
         while(cursor.moveToNext())
         {
             long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(User.FeedUser._ID));
             String nom = cursor.getString(cursor.getColumnIndex(User.FeedUser.COLUMN_NAME_LOGIN));
+            Log.i("DATABASE", nom);
             String password = cursor.getString(cursor.getColumnIndex(User.FeedUser.COLUMN_NAME_PASSWORD));
             persons.add(new Person(nom,password));
         }
@@ -111,13 +115,41 @@ class Database {
         return persons;
     }
 
-       public List<Person> readPerson() {
+    public long readUserID(String userLogin) {
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                BaseColumns._ID,
+                User.FeedUser.COLUMN_NAME_LOGIN,
+                User.FeedUser.COLUMN_NAME_PASSWORD
+        };
+        String selection = User.FeedUser.COLUMN_NAME_LOGIN + " LIKE '" + userLogin + "'";
+        String[] selectionArgs = null;
+        String sortOrder = User.FeedUser.COLUMN_NAME_PASSWORD + " DESC";
+        Cursor cursor = db.query(
+                User.FeedUser.TABLE_NAME,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,          // don't group the rows
+                null,           // don't filter by row groups
+                sortOrder               // The sort order
+        );
+        cursor.moveToNext();
+        long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(User.FeedUser._ID));
+        cursor.close();
+        return itemId;
+    }
+
+
+
+       public List<Person> readPerson(long userID) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 BaseColumns._ID,
                 ContactContact.FeedContact.COLUMN_NAME_LASTNAME,
+                ContactContact.FeedContact.COLUMN_NAME_USERID
         };
-        String selection = "";
+        String selection = ContactContact.FeedContact.COLUMN_NAME_USERID + " LIKE '" + userID + "'";
         String[] selectionArgs = null;
         String sortOrder = ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " ASC";
         Cursor cursor = db.query(

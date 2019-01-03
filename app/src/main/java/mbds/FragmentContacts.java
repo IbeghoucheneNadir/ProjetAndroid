@@ -28,10 +28,15 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
     private Database db;
     private List<String> nom;
     private List<Person> personne = new ArrayList<>();
+    private long userID;
 
     public FragmentContacts() {  }
 
     public void transferData(String s) { mCallback.transferData(s); }
+
+    public void setUserID(long userID){
+        this.userID = userID;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // Inflate the layout for this fragment
@@ -39,6 +44,7 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
         btn = v.findViewById(R.id.btnSend);
         btn.setOnClickListener(v1 -> {
             final Intent ma = new Intent(getActivity(), AddContact.class);
+            ma.putExtra("UserID", userID);
             startActivity(ma);
         });
         recyclerView = v.findViewById(R.id.recycler_view);
@@ -62,7 +68,7 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
         super.onResume();
         nom = new ArrayList<>();
         db=Database.getIstance(this.getContext());
-        personne=db.readPerson();
+        personne=db.readPerson(userID);
         for(Person p : personne){
             nom.add(p.getNom());
         }

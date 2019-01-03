@@ -10,7 +10,8 @@ class ContactHelper extends SQLiteOpenHelper
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Database.ContactContact.FeedContact.TABLE_NAME + " (" +
                     Database.ContactContact.FeedContact._ID + " INTEGER PRIMARY KEY," +
-                    Database.ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " TEXT)";
+                    Database.ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " TEXT, " +
+                    Database.ContactContact.FeedContact.COLUMN_NAME_USERID + " TEXT)";
 
 
     private static final String SQL_CREATE_BDD_USER =
