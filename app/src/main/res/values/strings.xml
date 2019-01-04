@@ -26,4 +26,6 @@
     <string name="local_service_label">HelloWorld</string>
     <string name="remote_service_started">remote service started</string>
     <string name="remote_service_stopped">remote service stopped</string>
+    <string name="write_your_message_here">write your message here</string>
+    <string name="fragment_2">FRAGMENT 2</string>
 </resources>
