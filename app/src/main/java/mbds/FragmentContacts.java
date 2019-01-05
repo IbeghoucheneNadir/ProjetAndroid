@@ -99,7 +99,7 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
     public boolean longtextClicked(String str, TextAdapter.MyViewHolder holder) {
         holder.itemView.setBackgroundColor(Color.RED);
         new AlertDialog.Builder(getContext())
-                .setTitle("Title")
+                .setTitle("Are you sure?")
                 .setMessage("Do you really want to delete contact " + str + " with all it's messages ?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

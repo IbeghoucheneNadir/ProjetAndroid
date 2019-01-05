@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements iCallable {
          if(switchBtn != null){
              handleClick();
          }
-         messages.setText(s);
+         messages.setText(s, userID);
      }
 
     Messenger mService = null;

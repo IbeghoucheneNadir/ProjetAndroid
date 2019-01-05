@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +56,50 @@ class Database {
         values.put(ContactContact.FeedContact.COLUMN_NAME_USERID, userID);
 
         // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
+        db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
+        //TABLE NAME = userID + name
+        String sqlCreateMessageTableForContact =
+                "CREATE TABLE m" + userID + name + " (id INTEGER PRIMARY KEY, message TEXT, ismymessage INTEGER)";
+        db.execSQL(sqlCreateMessageTableForContact);
     }
+
+    public void addMessage(String name, long userID, String message, boolean ismymessage){
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("message", message);
+        values.put("ismymessage", ismymessage);
+        db.insert("m" + userID + name, null, values);
+    }
+
+    public List<Pair<String, Boolean>> readMessages(String name, long userID){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {"id", "message", "ismymessage"};
+        String selection = "";
+        String[] selectionArgs = null;
+        String sortOrder = "id";
+        Cursor cursor = db.query(
+                "m" + userID + name,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,          // don't group the rows
+                null,           // don't filter by row groups
+                sortOrder               // The sort order
+        );
+
+        List<Pair<String,Boolean>> messages = new ArrayList<>();
+        while(cursor.moveToNext())
+        {
+            String message = cursor.getString(cursor.getColumnIndex("message"));
+            int ismymessage = cursor.getInt(cursor.getColumnIndex("ismymessage"));
+            messages.add(new Pair<>(message, ismymessage == 1));
+        }
+        cursor.close();
+        return messages;
+    }
+
+
+
 
     public void removePerson(String name, long userID) {
         // Gets the data repository in write mode
@@ -66,6 +109,8 @@ class Database {
         db.delete(ContactContact.FeedContact.TABLE_NAME,
                 ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " LIKE '" + name + "' AND " +
                         ContactContact.FeedContact.COLUMN_NAME_USERID + " LIKE '" + userID + "'", null);
+
+        db.execSQL("DROP TABLE IF EXISTS m" + userID + name);
     }
 
 
