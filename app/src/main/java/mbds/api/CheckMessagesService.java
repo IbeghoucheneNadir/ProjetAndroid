@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -15,8 +16,15 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.util.List;
+
 import mbds.Connect;
+import mbds.Database;
 import mbdse.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckMessagesService extends Service {
 
@@ -25,6 +33,8 @@ public class CheckMessagesService extends Service {
      */
     public static final int MSG_SAY_HELLO = 1;
     public static boolean serviceRunning = false;
+    private ApiService mAPIService;
+    private Database db;
 
     /**
      * Handler of incoming messages from clients.
@@ -57,6 +67,8 @@ public class CheckMessagesService extends Service {
     public void onCreate() {
         if(serviceRunning) return;
         super.onCreate();
+        mAPIService = RetrofitClient.getAPIService();
+
         Intent notificationIntent = new Intent(this, Connect.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
@@ -143,13 +155,42 @@ public class CheckMessagesService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(serviceRunning) return START_NOT_STICKY;
         super.onStartCommand(intent,flags,startId);
+
         Toast.makeText(this, "Started Service!!!", Toast.LENGTH_SHORT).show();
         //have to run indefinitely...
         // return don't stops the service, its a loop...
         myJob = new Job();
         thread = new Thread(myJob);
         thread.start();
+        fetchMessageFromServer();
         serviceRunning = true;
+
         return START_STICKY;
     }
+
+      public void fetchMessageFromServer(){
+
+        mAPIService.fetchMessages().enqueue(new Callback<List<mbds.api.Message>>() {
+
+              @Override
+              public void onResponse(Call<List<mbds.api.Message>> call, Response<List<mbds.api.Message>> response) {
+                  if(response.isSuccessful()){
+                      List<mbds.api.Message> listMessage= response.body();
+                      for (mbds.api.Message message: listMessage){
+                          String content="";
+                          int id =message.getId() ;
+                          String author =message.getAuthor();
+                          String textMessage =message.getTextmessage();
+                          String dateCreated =message.getDateCreated() ;
+                          db = Database.getIstance(getApplicationContext());
+                          db.addMessage(id,author,textMessage,dateCreated);
+                      }
+                  }
+              }
+              @Override
+              public void onFailure(Call<List<mbds.api.Message>> call, Throwable t) {
+                  // rien pour l'instant
+              }
+          });
+        }
 }
