@@ -8,9 +8,12 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-class Database {
+import mbds.api.Message;
+
+public class Database {
 
     public final class User {
         private User() {}
@@ -31,6 +34,17 @@ class Database {
         }
     }
 
+    public final class Message {
+        private Message() {}
+        public class FeedMessage implements BaseColumns {
+            public static final String TABLE_NAME = "Message";
+            public static final String COLUMN_NAME_ID = "Id";
+            public static final String COLUMN_NAME_AUTHOR = "Author";
+            public static final String COLUMN_NAME_TEXT_MESSSAGE = "TextMessage";
+            public static final String COLUMN_NAME_DATE = "Date";
+        }
+    }
+
     private static Database idatabase;
     private final ContactHelper mDbHelper;
 
@@ -43,6 +57,19 @@ class Database {
             idatabase =new Database(new ContactHelper(ctxt));
         }
         return idatabase;
+    }
+
+    public void addMessage(int id, String author, String textMessage, String dateCreated) {
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(Message.FeedMessage.COLUMN_NAME_ID, id);
+        values.put(Message.FeedMessage.COLUMN_NAME_AUTHOR, author);
+        values.put(Message.FeedMessage.COLUMN_NAME_TEXT_MESSSAGE, textMessage);
+        values.put(Message.FeedMessage.COLUMN_NAME_DATE, dateCreated);
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(Message.FeedMessage.TABLE_NAME, null, values);
     }
 
     public void addPerson(String name, long userID) {
@@ -81,7 +108,7 @@ class Database {
             cursor.close();
         }
         return id;
-}
+    }
 
     public List<Person> readUser() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -142,7 +169,7 @@ class Database {
 
 
 
-       public List<Person> readPerson(long userID) {
+    public List<Person> readPerson(long userID) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 BaseColumns._ID,

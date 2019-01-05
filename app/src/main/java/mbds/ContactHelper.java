@@ -7,6 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class ContactHelper extends SQLiteOpenHelper
 {
+    private static final String SQL_CREATE_TABLE_MESSAGE =
+            "CREATE TABLE " + Database.Message.FeedMessage.TABLE_NAME + " (" +
+                    Database.Message.FeedMessage.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
+                    Database.Message.FeedMessage.COLUMN_NAME_AUTHOR + " TEXT," +
+                    Database.Message.FeedMessage.COLUMN_NAME_TEXT_MESSSAGE + " TEXT, " +
+                    Database.Message.FeedMessage.COLUMN_NAME_DATE + " TEXT)";
+
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Database.ContactContact.FeedContact.TABLE_NAME + " (" +
                     Database.ContactContact.FeedContact._ID + " INTEGER PRIMARY KEY," +
@@ -20,6 +27,9 @@ class ContactHelper extends SQLiteOpenHelper
                     Database.User.FeedUser.COLUMN_NAME_LOGIN + " TEXT," +
                     Database.User.FeedUser.COLUMN_NAME_PASSWORD + " TEXT)" ;
 
+
+    private static final String SQL_DELETE_TABLE_MESSAGE =
+            "DROP TABLE IF EXISTS " + Database.Message.FeedMessage.TABLE_NAME;
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + Database.ContactContact.FeedContact.TABLE_NAME;
@@ -38,11 +48,13 @@ class ContactHelper extends SQLiteOpenHelper
 
         db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_BDD_USER);
+        db.execSQL(SQL_CREATE_TABLE_MESSAGE);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_DELETE_BDD_USER);
+        db.execSQL(SQL_DELETE_TABLE_MESSAGE);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
