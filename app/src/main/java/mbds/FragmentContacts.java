@@ -1,6 +1,8 @@
 package mbds;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import mbdse.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +93,31 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
             }
         }, 1000);
 
+    }
+
+    @Override
+    public boolean longtextClicked(String str, TextAdapter.MyViewHolder holder) {
+        holder.itemView.setBackgroundColor(Color.RED);
+        new AlertDialog.Builder(getContext())
+                .setTitle("Title")
+                .setMessage("Do you really want to delete contact " + str + " with all it's messages ?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        db.removePerson(str, userID);
+                        onResume();
+                        Toast.makeText(getContext(), "contact " + str + " deleted!", Toast.LENGTH_SHORT).show();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+        Timer timer = new Timer(str, true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }, 1000);
+        return true;
     }
 }
 

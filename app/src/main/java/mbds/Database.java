@@ -58,6 +58,17 @@ class Database {
         long newRowId = db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
     }
 
+    public void removePerson(String name, long userID) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Insert the new row, returning the primary key value of the new row
+        db.delete(ContactContact.FeedContact.TABLE_NAME,
+                ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " LIKE '" + name + "' AND " +
+                        ContactContact.FeedContact.COLUMN_NAME_USERID + " LIKE '" + userID + "'", null);
+    }
+
+
     public void addUser(String login, String password) {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();

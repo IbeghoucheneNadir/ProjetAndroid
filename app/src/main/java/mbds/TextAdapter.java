@@ -44,6 +44,7 @@ class TextAdapter extends RecyclerView.Adapter<TextAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.txtv.setText(strs.get(position));
         holder.txtv.setOnClickListener((view -> tal.textClicked(strs.get(position), holder)));
+        holder.txtv.setOnLongClickListener((view -> tal.longtextClicked(strs.get(position), holder)));
     }
 
     @Override
