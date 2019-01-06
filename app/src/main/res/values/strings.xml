@@ -28,4 +28,6 @@
     <string name="remote_service_stopped">remote service stopped</string>
     <string name="write_your_message_here">write your message here</string>
     <string name="fragment_2">FRAGMENT 2</string>
+    <string name="contactnonAjoute">Le contact ne peut pas contenir de caractères spéciaux</string>
+    <string name="contactnonVide">Le conatact ne peut pas etre vide !</string>
 </resources>

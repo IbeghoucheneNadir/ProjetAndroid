@@ -31,12 +31,23 @@ public class AddContact extends AppCompatActivity {
         addContactBtn.setOnClickListener((v1) -> onClick());
     }
 
-    private void onClick(){
-        EditText editText =  findViewById(R.id.contactText);
+    private void onClick() {
+        EditText editText = findViewById(R.id.contactText);
         String contact = editText.getText().toString();
-        db.addPerson(contact, userID);
-        Toast.makeText(getApplicationContext(),
-                R.string.contactAjoute, Toast.LENGTH_SHORT).show();
-        finish();
+        if (contact.length()==0){
+            Toast.makeText(getApplicationContext(),
+                    R.string.contactnonVide, Toast.LENGTH_SHORT).show();
+        }
+        else if (contact.length() != 0 && contact.matches("[a-zA-z_0-9]*")) {
+            db.addPerson(contact, userID);
+            Toast.makeText(getApplicationContext(),
+                    R.string.contactAjoute, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),
+                    R.string.contactnonAjoute, Toast.LENGTH_SHORT).show();
+        }
     }
+
 }
