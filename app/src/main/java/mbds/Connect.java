@@ -44,7 +44,6 @@ public class Connect extends AppCompatActivity {
         registerBtn.setOnClickListener((v) -> startActivity(i));
         validBtn = findViewById(R.id.validBtn);
         validBtn.setOnClickListener((v) -> login());
-        startService(new Intent(this, CheckMessagesService.class));
         Log.i("Connect ONCREATE", "created!");
     }
 
@@ -68,6 +67,11 @@ public class Connect extends AppCompatActivity {
                 //we enter directly to next screen for offline access
                 //and then try to connect to the remote server
                 validBtn.setBackgroundColor(Color.GREEN);
+                Intent intent = new Intent(Connect.this, CheckMessagesService.class);
+                intent.putExtra("login",login.getText().toString());
+                intent.putExtra("password", password.getText().toString());
+                stopService(intent);
+                startService(intent);
                 final Intent ma = new Intent(this, MainActivity.class);
                 db.readUser();
                 ma.putExtra("UserID", db.readUserID(login.getText().toString()));
@@ -91,6 +95,11 @@ public class Connect extends AppCompatActivity {
                             db = Database.getIstance(getApplicationContext());
                             db.addUser(params.get("username") , params.get("password"));
                             validBtn.setBackgroundColor(Color.GREEN);
+                            Intent intent = new Intent(Connect.this, CheckMessagesService.class);
+                            Log.i("LOGIN", response.body().getAccessToken());
+                            intent.putExtra("token","Bearer " + response.body().getAccessToken());
+                            stopService(intent);
+                            startService(intent);
                             final Intent ma = new Intent(Connect.this, MainActivity.class);
                             ma.putExtra("UserID", db.readUserID(params.get("username")));
                             startActivity(ma);

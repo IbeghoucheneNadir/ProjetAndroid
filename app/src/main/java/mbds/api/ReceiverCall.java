@@ -10,6 +10,10 @@ public class ReceiverCall extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i("SERVICE", "Stops Ohhhhhhh");
-        context.startService(new Intent(context, CheckMessagesService.class));;
+        Intent theIntent = new Intent(context, CheckMessagesService.class);
+        theIntent.putExtra("token", intent.getStringExtra("token"));
+        theIntent.putExtra("login", intent.getStringExtra("login"));
+        theIntent.putExtra("password", intent.getStringExtra("password"));
+        context.startService(theIntent);
     }
 }

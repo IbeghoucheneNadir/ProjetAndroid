@@ -54,6 +54,7 @@ public class FragmentMessages extends Fragment {
         this.txt = txt;
         this.userID = userID;
         db=Database.getIstance(this.getContext());
+        if(this.txt == null) return;
         List<Pair<String, Boolean>> messages = db.readMessages(txt, userID);
         String mstr = "Chat with " + txt + " =>";
         for(Pair<String, Boolean> p : messages){

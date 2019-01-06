@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
@@ -17,10 +18,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import mbds.Connect;
 import mbds.Database;
+import mbds.MainActivity;
 import mbdse.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +41,9 @@ public class CheckMessagesService extends Service {
     public static boolean serviceRunning = false;
     private ApiService mAPIService;
     private Database db;
+    private String token; //this is temporarly... have to move it in to the key store...
+    private String login;
+    private String password;
 
     /**
      * Handler of incoming messages from clients.
@@ -90,6 +99,9 @@ public class CheckMessagesService extends Service {
         myJob.stopJob();
         serviceRunning = false;
         Intent intent = new Intent();
+        intent.putExtra("token",this.token);
+        intent.putExtra("password", this.password);
+        intent.putExtra("login", this.login);
         intent.setAction("mbds.api.restartService");
         intent.setClass(this, ReceiverCall.class);
         sendBroadcast(intent);
@@ -155,28 +167,77 @@ public class CheckMessagesService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(serviceRunning) return START_NOT_STICKY;
         super.onStartCommand(intent,flags,startId);
-
+        token = intent.getStringExtra("token");
+        login = intent.getStringExtra("login");
+        password = intent.getStringExtra("password");
+        Log.i("SERVICEMESSAGE", "token="+this.token);
         Toast.makeText(this, "Started Service!!!", Toast.LENGTH_SHORT).show();
         //have to run indefinitely...
         // return don't stops the service, its a loop...
-        myJob = new Job();
-        thread = new Thread(myJob);
-        thread.start();
-        fetchMessageFromServer();
+        if(token != null) {
+            startTread();
+        }else{
+            getToken();
+        }
         serviceRunning = true;
 
         return START_STICKY;
     }
 
-      public void fetchMessageFromServer(){
+    private void startTread(){
+        myJob = new Job();
+        thread = new Thread(myJob);
+        thread.start();
+        Log.i("SERVICE", "fetching message...");
+        fetchMessageFromServer();
+    }
 
-        mAPIService.fetchMessages().enqueue(new Callback<List<mbds.api.Message>>() {
+    private void getToken() {
+        Map<String, String> params = new HashMap<>();
+        params.put("username", login);
+        params.put("password", password);
+        Log.i("SERVICEMESSAGE", "trying to get token...");
+        mAPIService.login(params).enqueue(new Callback<Login>() {
+            @Override
+            public void onResponse(Call<Login> call, Response<Login> response) {
+                //message send but what result?
+                if(response.isSuccessful()) {
+                    //valid credentials, we have to save them in the database
+                    CheckMessagesService.this.token = "Bearer " + response.body().getAccessToken();
+                    startTread();
+                    Log.i("SERVICEMESSAGE", "post submitted to API." + response.toString());
+                }else {
+                    Log.e("SERVICEMESSAGE", "post submitted to API." + response.toString());
+                    //we don't retry because pass or login is false...
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Login> call, Throwable t) {
+                //message not send...
+                Log.w("SERVICEMESSAGE", "Unable to submit post to API. " + t.getMessage());
+                Log.w("SERVICEMESSAGE", call.toString());
+                Timer timer = new Timer("onFailHaveToRetry!", true);
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        getToken();
+                    }
+                }, 30000);
+            }
+        });
+    }
+
+    public void fetchMessageFromServer(){
+        mAPIService.fetchMessages(this.token).enqueue(new Callback<List<mbds.api.Message>>() {
 
               @Override
               public void onResponse(Call<List<mbds.api.Message>> call, Response<List<mbds.api.Message>> response) {
                   if(response.isSuccessful()){
                       List<mbds.api.Message> listMessage= response.body();
+                      Log.i("SERVICEMESSAGE", "success! "+ response.toString());
                       for (mbds.api.Message message: listMessage){
+                          Log.e("SERVICEMESSAGE", message.toString());
                           String content="";
                           int id =message.getId() ;
                           String author =message.getAuthor();
@@ -185,11 +246,14 @@ public class CheckMessagesService extends Service {
                           db = Database.getIstance(getApplicationContext());
                           db.addMessage(id,author,textMessage,dateCreated);
                       }
+                  }else{
+                      Log.w("SERVICEMESSAGE", "post submitted to API. " + response.toString());
                   }
               }
               @Override
               public void onFailure(Call<List<mbds.api.Message>> call, Throwable t) {
-                  // rien pour l'instant
+                  Log.e("SERVICEMESSAGE", "Unable to submit post to API. " + t.getMessage());
+                  Log.e("SERVICEMESSAGE", call.toString());
               }
           });
         }

@@ -37,4 +37,8 @@ public class Message {
     public String getDateCreated() {
         return dateCreated;
     }
+
+    public String toString(){
+        return "id= " + this.id + " author= " + this.author + " date= " + this.dateCreated + "message= " +  this.textMessage;
+    }
 }
