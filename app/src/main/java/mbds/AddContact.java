@@ -39,6 +39,7 @@ public class AddContact extends AppCompatActivity {
                     R.string.contactnonVide, Toast.LENGTH_SHORT).show();
         }
         else if (contact.length() != 0 && contact.matches("[a-zA-z_0-9]*")) {
+
             db.addPerson(contact, userID);
             Toast.makeText(getApplicationContext(),
                     R.string.contactAjoute, Toast.LENGTH_SHORT).show();

@@ -69,7 +69,7 @@ public class Message {
     }
 
     public String toString(){
-        return "id="+id+" author="+author+" msg="+msg+" date="+dateCreated+" alreadyReturned"+alreadyReturned;
+        return "id="+id+" author="+author+" msg="+msg+" date="+dateCreated+" alreadyReturned="+alreadyReturned;
     }
 
 }

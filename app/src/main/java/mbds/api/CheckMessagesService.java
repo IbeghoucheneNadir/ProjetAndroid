@@ -44,6 +44,9 @@ public class CheckMessagesService extends Service {
     private String login;
     private long userID;
     private String password;
+    private int waitTime = 30000;
+    private int count5secs = 0;
+    private boolean isFirstTime;
 
     /**
      * Handler of incoming messages from clients.
@@ -159,9 +162,21 @@ public class CheckMessagesService extends Service {
             while(keepRunning()) {
                 try {
                     i++;
-                    final int ii = i;
-                    Thread.sleep(1000);
-                    Log.i("SERVICE", "log " + i);
+                    fetchMessageFromServer();
+                    if(isFirstTime){
+                        //to let some time to fetch the data
+                        isFirstTime = false;
+                        Thread.sleep(5000);
+                    }
+                    final int ii = i; // java forever
+                    if(waitTime == 5000){
+                        count5secs++;
+                    }
+                    if(count5secs > 36 && waitTime < 30000){
+                        waitTime += 5000;
+                    }
+                    Thread.sleep(waitTime);
+                    Log.i("SERVICE", "waittime " + waitTime + " count5secs " + count5secs + " i= " + i);
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -200,9 +215,9 @@ public class CheckMessagesService extends Service {
     private void startTread(){
         myJob = new Job();
         thread = new Thread(myJob);
+        isFirstTime = true;
         thread.start();
         Log.i("SERVICE", "fetching message...");
-        fetchMessageFromServer();
     }
 
     private void getToken() {
@@ -256,8 +271,12 @@ public class CheckMessagesService extends Service {
                           String author =message.getAuthor();
                           String textMessage =message.getMsg();
                           String dateCreated =message.getDateCreated();
-                          db = Database.getIstance(getApplicationContext());
-                          db.addMessage(author,CheckMessagesService.this.login,author,textMessage,dateCreated, CheckMessagesService.this.userID);
+                          if(!message.getAlreadyReturned()){
+                              waitTime = 5000;
+                              count5secs = 0;
+                              db = Database.getIstance(getApplicationContext());
+                              db.addMessage(author,CheckMessagesService.this.login,author,textMessage,dateCreated, CheckMessagesService.this.userID);
+                          }
                       }
                   }else{
                       Log.w("SERVICEMESSAGE", "post submitted to API. " + response.toString());
