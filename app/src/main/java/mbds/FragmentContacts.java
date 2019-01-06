@@ -49,6 +49,7 @@ public class FragmentContacts extends Fragment implements TextAdapterListener{
         btn.setOnClickListener(v1 -> {
             final Intent ma = new Intent(getActivity(), AddContact.class);
             ma.putExtra("UserID", userID);
+            ma.putExtra("token", mCallback.getToken());
             startActivity(ma);
         });
         recyclerView = v.findViewById(R.id.recycler_view);
