@@ -26,7 +26,6 @@ import java.util.TimerTask;
 import mbds.Connect;
 import mbds.Database;
 import mbdse.R;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -255,7 +254,7 @@ public class CheckMessagesService extends Service {
                           String content="";
                           int id =message.getId() ;
                           String author =message.getAuthor();
-                          String textMessage =message.getTextmessage();
+                          String textMessage =message.getMsg();
                           String dateCreated =message.getDateCreated();
                           db = Database.getIstance(getApplicationContext());
                           db.addMessage(author,CheckMessagesService.this.login,author,textMessage,dateCreated, CheckMessagesService.this.userID);

@@ -2,8 +2,6 @@ package mbds;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Message;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import mbds.api.ApiService;
-import mbds.api.CheckMessagesService;
 import mbds.api.MessageEntry;
 import mbds.api.RetrofitClient;
 import mbdse.R;
@@ -115,9 +112,9 @@ public class FragmentMessages extends Fragment {
         for(MessageEntry me : messages){
             Log.e("FRAGMENT", me.toString());
             if(!me.getAuthor().equals(me.getContact())){
-                mstr += "\n me: " + me.getTextmessage();
+                mstr += "\n me: " + me.getMsg();
             }else{
-                mstr += "\n " + txt + ": " + me.getTextmessage();
+                mstr += "\n " + txt + ": " + me.getMsg();
             }
         }
         if(tv!=null){

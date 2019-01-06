@@ -1,44 +1,75 @@
 package mbds.api;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
 
 public class Message {
 
-    private int id;
-
-    private String  author;
-
-    @SerializedName("body")
-    private String textMessage;
-
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("author")
+    @Expose
+    private String author;
+    @SerializedName("msg")
+    @Expose
+    private String msg;
+    @SerializedName("dateCreated")
+    @Expose
     private String dateCreated;
+    @SerializedName("alreadyReturned")
+    @Expose
+    private Boolean alreadyReturned;
 
-    public Message(int id, String author, String textMessage, String dateCreated) {
+    public Message(int id, String author, String msg, String dateCreated) {
         this.id = id;
         this.author = author;
-        this.textMessage = textMessage;
+        this.msg = msg;
         this.dateCreated = dateCreated;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public String getTextmessage() {
-        return textMessage;
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getDateCreated() {
         return dateCreated;
     }
 
-    public String toString(){
-        return "id= " + this.id + " author= " + this.author + " date= " + this.dateCreated + " message= " +  this.textMessage;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
+
+    public Boolean getAlreadyReturned() {
+        return alreadyReturned;
+    }
+
+    public void setAlreadyReturned(Boolean alreadyReturned) {
+        this.alreadyReturned = alreadyReturned;
+    }
+
+    public String toString(){
+        return "id="+id+" author="+author+" msg="+msg+" date="+dateCreated+" alreadyReturned"+alreadyReturned;
+    }
+
 }
