@@ -3,6 +3,7 @@ package mbds.api;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,4 +23,8 @@ public interface ApiService {
 
     @GET("/api/fetchMessages")
     Call<List<Message>> fetchMessages(@Header("Authorization") String authKey);
+
+    @POST("/api/sendMsg")
+    @Headers({"Content-Type:application/json"})
+    Call<ResponseBody> sendMsg(@Header("Authorization") String authKey, @Body Map<String, String> params);
 }

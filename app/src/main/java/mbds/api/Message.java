@@ -39,6 +39,6 @@ public class Message {
     }
 
     public String toString(){
-        return "id= " + this.id + " author= " + this.author + " date= " + this.dateCreated + "message= " +  this.textMessage;
+        return "id= " + this.id + " author= " + this.author + " date= " + this.dateCreated + " message= " +  this.textMessage;
     }
 }

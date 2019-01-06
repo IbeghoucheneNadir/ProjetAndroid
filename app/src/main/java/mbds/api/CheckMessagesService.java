@@ -5,19 +5,18 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +25,8 @@ import java.util.TimerTask;
 
 import mbds.Connect;
 import mbds.Database;
-import mbds.MainActivity;
 import mbdse.R;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,10 +37,11 @@ public class CheckMessagesService extends Service {
      * Command to the service to display a message
      */
     public static final int MSG_SAY_HELLO = 1;
+    public static final int MSG_GET_TOKEN = 4;
     public static boolean serviceRunning = false;
     private ApiService mAPIService;
     private Database db;
-    private String token; //this is temporarly... have to move it in to the key store...
+    static private String token; //this is temporarly... have to move it in to the key store...
     private String login;
     private long userID;
     private String password;
@@ -61,6 +61,17 @@ public class CheckMessagesService extends Service {
             switch (msg.what) {
                 case MSG_SAY_HELLO:
                     Toast.makeText(applicationContext, "hello!", Toast.LENGTH_SHORT).show();
+                    break;
+                case MSG_GET_TOKEN:
+                    Message responseMsg = Message.obtain(null, MSG_GET_TOKEN);
+                    Bundle b = new Bundle();
+                    b.putString("str1", CheckMessagesService.token);
+                    responseMsg.setData(b);
+                    try {
+                        msg.replyTo.send(responseMsg);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     super.handleMessage(msg);
@@ -245,7 +256,7 @@ public class CheckMessagesService extends Service {
                           int id =message.getId() ;
                           String author =message.getAuthor();
                           String textMessage =message.getTextmessage();
-                          String dateCreated =message.getDateCreated() ;
+                          String dateCreated =message.getDateCreated();
                           db = Database.getIstance(getApplicationContext());
                           db.addMessage(author,CheckMessagesService.this.login,author,textMessage,dateCreated, CheckMessagesService.this.userID);
                       }
