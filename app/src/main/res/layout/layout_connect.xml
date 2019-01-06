@@ -1,35 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:background="#abc"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:textColor="#fff"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="35dp"
+            android:text="Secure SMS" />
 
         <TextView
             android:id="@+id/logintxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="25dp"
             android:text="@string/logintxt" />
 
         <EditText
             android:id="@+id/loginbox"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:inputType="" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#aaa"
+            android:inputType="textPersonName"/>
 
         <TextView
             android:id="@+id/passtxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="25dp"
             android:text="@string/passtxt" />
 
         <EditText
             android:id="@+id/passbox"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#aaa"
             android:inputType="textPassword" />
 
         <Button
