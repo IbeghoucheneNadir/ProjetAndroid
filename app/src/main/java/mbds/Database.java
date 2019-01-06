@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import mbds.api.Message;
+import mbds.api.MessageEntry;
 
 public class Database {
 
@@ -41,36 +42,24 @@ public class Database {
             public static final String TABLE_NAME = "Message";
             public static final String COLUMN_NAME_ID = "Id";
             public static final String COLUMN_NAME_AUTHOR = "Author";
-            public static final String COLUMN_NAME_TEXT_MESSSAGE = "TextMessage";
+            public static final String COLUMN_NAME_RECIPIENT = "Recipient";
+            public static final String COLUMN_NAME_CONTACT = "Contact";
+            public static final String COLUMN_NAME_MESSSAGE = "Message";
             public static final String COLUMN_NAME_DATE = "Date";
+            public static final String COLUMN_NAME_USERID = "userID";
         }
     }
 
     private static Database idatabase;
     private final ContactHelper mDbHelper;
 
-    private Database(ContactHelper sqlp){
-        mDbHelper = sqlp;
-    }
+    private Database(ContactHelper sqlp){ mDbHelper = sqlp; }
 
     public static Database getIstance(Context ctxt){
         if(idatabase==null) {
             idatabase =new Database(new ContactHelper(ctxt));
         }
         return idatabase;
-    }
-
-    public void addMessage(int id, String author, String textMessage, String dateCreated) {
-
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(Message.FeedMessage.COLUMN_NAME_ID, id);
-        values.put(Message.FeedMessage.COLUMN_NAME_AUTHOR, author);
-        values.put(Message.FeedMessage.COLUMN_NAME_TEXT_MESSSAGE, textMessage);
-        values.put(Message.FeedMessage.COLUMN_NAME_DATE, dateCreated);
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(Message.FeedMessage.TABLE_NAME, null, values);
     }
 
     public void addPerson(String name, long userID) {
@@ -84,28 +73,37 @@ public class Database {
 
         // Insert the new row, returning the primary key value of the new row
         db.insert(ContactContact.FeedContact.TABLE_NAME, null, values);
-        //TABLE NAME = userID + name
-        String sqlCreateMessageTableForContact =
-                "CREATE TABLE m" + userID + name + " (id INTEGER PRIMARY KEY, message TEXT, ismymessage INTEGER)";
-        db.execSQL(sqlCreateMessageTableForContact);
     }
 
-    public void addMessage(String name, long userID, String message, boolean ismymessage){
+    public void addMessage(String author, String recipient, String contact, String message, String date , long userID){
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("message", message);
-        values.put("ismymessage", ismymessage);
-        db.insert("m" + userID + name, null, values);
+        values.put(Message.FeedMessage.COLUMN_NAME_AUTHOR, author);
+        values.put(Message.FeedMessage.COLUMN_NAME_RECIPIENT, recipient);
+        values.put(Message.FeedMessage.COLUMN_NAME_CONTACT, contact);
+        values.put(Message.FeedMessage.COLUMN_NAME_MESSSAGE, message);
+        values.put(Message.FeedMessage.COLUMN_NAME_DATE, date);
+        values.put(Message.FeedMessage.COLUMN_NAME_USERID, userID);
+        // Insert the new row, returning the primary key value of the new row
+        db.insert(Message.FeedMessage.TABLE_NAME, null, values);
     }
 
-    public List<Pair<String, Boolean>> readMessages(String name, long userID){
+    public List<MessageEntry> readMessages(String name, long userID){
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {"id", "message", "ismymessage"};
-        String selection = "";
+        String[] projection = {
+                Message.FeedMessage.COLUMN_NAME_ID,
+                Message.FeedMessage.COLUMN_NAME_AUTHOR,
+                Message.FeedMessage.COLUMN_NAME_RECIPIENT,
+                Message.FeedMessage.COLUMN_NAME_CONTACT,
+                Message.FeedMessage.COLUMN_NAME_MESSSAGE,
+                Message.FeedMessage.COLUMN_NAME_DATE
+        };
+        String selection = Message.FeedMessage.COLUMN_NAME_CONTACT + " LIKE '" + name + "' " +" AND " +
+                Message.FeedMessage.COLUMN_NAME_USERID + " LIKE '" + userID + "'";
         String[] selectionArgs = null;
-        String sortOrder = "id";
+        String sortOrder = "date(" + Message.FeedMessage.COLUMN_NAME_DATE + ") DESC";
         Cursor cursor = db.query(
-                "m" + userID + name,   // The table to query
+                Message.FeedMessage.TABLE_NAME,   // The table to query
                 projection,             // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
@@ -113,13 +111,16 @@ public class Database {
                 null,           // don't filter by row groups
                 sortOrder               // The sort order
         );
-
-        List<Pair<String,Boolean>> messages = new ArrayList<>();
+        List<MessageEntry> messages = new ArrayList<>();
         while(cursor.moveToNext())
         {
-            String message = cursor.getString(cursor.getColumnIndex("message"));
-            int ismymessage = cursor.getInt(cursor.getColumnIndex("ismymessage"));
-            messages.add(new Pair<>(message, ismymessage == 1));
+            long id = cursor.getLong(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_ID));
+            String author = cursor.getString(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_AUTHOR));
+            String recipient = cursor.getString(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_RECIPIENT));
+            String contact = cursor.getString(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_CONTACT));
+            String message = cursor.getString(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_MESSSAGE));
+            String date = cursor.getString(cursor.getColumnIndex(Message.FeedMessage.COLUMN_NAME_DATE));
+            messages.add(new MessageEntry((int) id, author, recipient, contact, message, date, userID));
         }
         cursor.close();
         return messages;
@@ -136,8 +137,9 @@ public class Database {
         db.delete(ContactContact.FeedContact.TABLE_NAME,
                 ContactContact.FeedContact.COLUMN_NAME_LASTNAME + " LIKE '" + name + "' AND " +
                         ContactContact.FeedContact.COLUMN_NAME_USERID + " LIKE '" + userID + "'", null);
-
-        db.execSQL("DROP TABLE IF EXISTS m" + userID + name);
+        String selection = Message.FeedMessage.COLUMN_NAME_CONTACT + " LIKE '" + name + "' " +" AND " +
+                Message.FeedMessage.COLUMN_NAME_USERID + " LIKE '" + userID + "'";
+        db.delete(Message.FeedMessage.TABLE_NAME, selection, null);
     }
 
 
@@ -224,6 +226,28 @@ public class Database {
     }
 
 
+    public String getLogin(long userID){
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                User.FeedUser.COLUMN_NAME_LOGIN
+        };
+        String selection = User.FeedUser._ID + " LIKE '" + userID + "'";
+        String[] selectionArgs = null;
+        String sortOrder = "";
+        Cursor cursor = db.query(
+                User.FeedUser.TABLE_NAME,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,          // don't group the rows
+                null,           // don't filter by row groups
+                sortOrder               // The sort order
+        );
+        cursor.moveToNext();
+        String login = cursor.getString(cursor.getColumnIndexOrThrow(User.FeedUser.COLUMN_NAME_LOGIN));
+        cursor.close();
+        return login;
+    }
 
     public List<Person> readPerson(long userID) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();

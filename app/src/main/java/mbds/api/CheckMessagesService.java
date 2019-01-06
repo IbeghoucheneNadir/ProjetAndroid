@@ -244,7 +244,7 @@ public class CheckMessagesService extends Service {
                           String textMessage =message.getTextmessage();
                           String dateCreated =message.getDateCreated() ;
                           db = Database.getIstance(getApplicationContext());
-                          db.addMessage(id,author,textMessage,dateCreated);
+                          //db.addMessage(id,author,textMessage,dateCreated); TODO addmessage!
                       }
                   }else{
                       Log.w("SERVICEMESSAGE", "post submitted to API. " + response.toString());

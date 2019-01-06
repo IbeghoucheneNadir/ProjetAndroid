@@ -10,12 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import mbds.api.MessageEntry;
 import mbdse.R;
 
 public class FragmentMessages extends Fragment {
-    private String txt;
+    private String contactName;
     private TextView tv;
     private Database db;
     private EditText textInput;
@@ -28,7 +31,7 @@ public class FragmentMessages extends Fragment {
     public void onResume() {
         super.onResume();
         if(tv!=null){
-            setText(this.txt, this.userID);
+            setText(this.contactName, this.userID);
         }
     }
 
@@ -45,23 +48,26 @@ public class FragmentMessages extends Fragment {
 
     private void onClick(View view) {
         String message = textInput.getText().toString();
-        db.addMessage(this.txt, this.userID, message, true);
+        String login = db.getLogin(this.userID);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String date = simpleDateFormat.format(new Date());
+        db.addMessage(login, this.contactName, this.contactName, message, date, this.userID);
         textInput.setText("",null);
         onResume();
     }
 
     public void setText(String txt, long userID) {
-        this.txt = txt;
+        this.contactName = txt;
         this.userID = userID;
         db=Database.getIstance(this.getContext());
-        if(this.txt == null) return;
-        List<Pair<String, Boolean>> messages = db.readMessages(txt, userID);
+        if(this.contactName == null) return;
+        List<MessageEntry> messages = db.readMessages(txt, userID);
         String mstr = "Chat with " + txt + " =>";
-        for(Pair<String, Boolean> p : messages){
-            if(p.second){
-                mstr += "\n me: " + p.first;
+        for(MessageEntry me : messages){
+            if(me.getRecipient().equals(me.getContact())){
+                mstr += "\n me: " + me.getTextmessage();
             }else{
-                mstr += "\n " + txt + ": " + p.first;
+                mstr += "\n " + txt + ": " + me.getTextmessage();
             }
         }
         if(tv!=null){

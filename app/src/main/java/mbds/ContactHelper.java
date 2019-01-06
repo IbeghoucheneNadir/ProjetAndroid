@@ -11,8 +11,11 @@ class ContactHelper extends SQLiteOpenHelper
             "CREATE TABLE " + Database.Message.FeedMessage.TABLE_NAME + " (" +
                     Database.Message.FeedMessage.COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                     Database.Message.FeedMessage.COLUMN_NAME_AUTHOR + " TEXT," +
-                    Database.Message.FeedMessage.COLUMN_NAME_TEXT_MESSSAGE + " TEXT, " +
-                    Database.Message.FeedMessage.COLUMN_NAME_DATE + " TEXT)";
+                    Database.Message.FeedMessage.COLUMN_NAME_RECIPIENT + " TEXT," +
+                    Database.Message.FeedMessage.COLUMN_NAME_CONTACT+ " TEXT, " +
+                    Database.Message.FeedMessage.COLUMN_NAME_MESSSAGE+ " TEXT, " +
+                    Database.Message.FeedMessage.COLUMN_NAME_DATE + " TEXT, " +
+                    Database.Message.FeedMessage.COLUMN_NAME_USERID + " TEXT)";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + Database.ContactContact.FeedContact.TABLE_NAME + " (" +
