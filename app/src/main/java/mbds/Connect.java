@@ -70,6 +70,7 @@ public class Connect extends AppCompatActivity {
                 Intent intent = new Intent(Connect.this, CheckMessagesService.class);
                 intent.putExtra("login",login.getText().toString());
                 intent.putExtra("password", password.getText().toString());
+                intent.putExtra("userID", db.readUserID(login.getText().toString()));
                 stopService(intent);
                 startService(intent);
                 final Intent ma = new Intent(this, MainActivity.class);
@@ -98,6 +99,7 @@ public class Connect extends AppCompatActivity {
                             Intent intent = new Intent(Connect.this, CheckMessagesService.class);
                             Log.i("LOGIN", response.body().getAccessToken());
                             intent.putExtra("token","Bearer " + response.body().getAccessToken());
+                            intent.putExtra("userID", db.readUserID(login.getText().toString()));
                             stopService(intent);
                             startService(intent);
                             final Intent ma = new Intent(Connect.this, MainActivity.class);

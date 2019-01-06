@@ -14,6 +14,7 @@ public class ReceiverCall extends BroadcastReceiver {
         theIntent.putExtra("token", intent.getStringExtra("token"));
         theIntent.putExtra("login", intent.getStringExtra("login"));
         theIntent.putExtra("password", intent.getStringExtra("password"));
+        theIntent.putExtra("userID", intent.getStringExtra("userID"));
         context.startService(theIntent);
     }
 }

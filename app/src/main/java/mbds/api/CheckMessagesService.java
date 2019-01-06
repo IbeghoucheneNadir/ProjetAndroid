@@ -43,6 +43,7 @@ public class CheckMessagesService extends Service {
     private Database db;
     private String token; //this is temporarly... have to move it in to the key store...
     private String login;
+    private long userID;
     private String password;
 
     /**
@@ -102,6 +103,7 @@ public class CheckMessagesService extends Service {
         intent.putExtra("token",this.token);
         intent.putExtra("password", this.password);
         intent.putExtra("login", this.login);
+        intent.putExtra("userID", this.userID);
         intent.setAction("mbds.api.restartService");
         intent.setClass(this, ReceiverCall.class);
         sendBroadcast(intent);
@@ -170,6 +172,7 @@ public class CheckMessagesService extends Service {
         token = intent.getStringExtra("token");
         login = intent.getStringExtra("login");
         password = intent.getStringExtra("password");
+        userID = intent.getLongExtra("userID", -1);
         Log.i("SERVICEMESSAGE", "token="+this.token);
         Toast.makeText(this, "Started Service!!!", Toast.LENGTH_SHORT).show();
         //have to run indefinitely...
@@ -244,7 +247,7 @@ public class CheckMessagesService extends Service {
                           String textMessage =message.getTextmessage();
                           String dateCreated =message.getDateCreated() ;
                           db = Database.getIstance(getApplicationContext());
-                          //db.addMessage(id,author,textMessage,dateCreated); TODO addmessage!
+                          db.addMessage(author,CheckMessagesService.this.login,author,textMessage,dateCreated, CheckMessagesService.this.userID);
                       }
                   }else{
                       Log.w("SERVICEMESSAGE", "post submitted to API. " + response.toString());
